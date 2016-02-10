@@ -1,15 +1,18 @@
+#!/bin/python
+
 import thread
 import time
 import server
 import client
+import sys
 
 def start_server(threadName):
     print 'Started server'
-    server.main()
+    server.main(sys.argv[1])
 
 def start_client(threadName):
     print 'Started client'
-    client.main()
+    client.main(sys.argv[2])
 
 try:
     thread.start_new_thread( start_server, ("Server", ) )

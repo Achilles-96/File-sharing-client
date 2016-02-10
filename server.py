@@ -7,17 +7,17 @@ import mimetypes
 
 class Server:
 
-    def init(self):
+    def init(self,ip):
         port = 60000                    # Reserve a port for your service.
         s = socket.socket()             # Create a socket object
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         host = socket.gethostname()     # Get local machine name
-        s.bind((host, port))            # Bind to the port
+        s.bind((ip, port))            # Bind to the port
         s.listen(5)                     # Now wait for client connection.
         return s
 
-    def runServer(self):
-        s = self.init()
+    def runServer(self,ip):
+        s = self.init(ip)
         print 'Server listening....'
 
         while True:
@@ -69,6 +69,6 @@ class Server:
 # Error codes
 # 101 for file not found
 
-def main():
+def main(ip):
     server = Server()
-    server.runServer()
+    server.runServer(ip)
