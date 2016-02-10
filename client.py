@@ -14,23 +14,27 @@ class Client:
         s = self.connect()
         receiving = True
         data = ""
-        
+        validity = True
+
         s.send(message)
         
         if file_request:
             with open('received_file', 'wb') as f:
-                print 'file opened'
                 while True:
-                    print('receiving data...')
                     data = s.recv(1024)
-                    print('data=%s', (data))
+                    if data == "#101":
+                        validity = False
                     if not data:
                         break
                     # write data to a file
-                    f.write(data)
+                    if validity == True:
+                        f.write(data)
             f.close()
             s.close()
-            return "File read"
+            if validity:
+                return "File read"
+            else:
+                return "File not found"
 
         else:    
             while receiving:
@@ -45,7 +49,6 @@ class Client:
 def main():
     connect = Client()
     print connect.send("File List",False)
-    print connect.send("File List",False)
-    print connect.send("Select File: 8",True)
+    print connect.send("Select File: README.md",True)
 
 main()

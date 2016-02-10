@@ -28,23 +28,29 @@ class Server:
                 conn.send("Hello client!")
 
             if data=="File List":
-                files = [f for f in os.listdir('.') if os.path.isfile(f)]
-                conn.send(' '.join(files))  #send file list to server
+                files = [f for f in os.listdir('.') if os.path.isfile(f) and f[0]!='.']
+                conn.send('\t'.join(files))  #send file list to server
 
             if "Select File" in data:
                 command,value = data.split(':')
-                filename='mytext.txt'
-                f = open(filename,'rb')
-                l = f.read(1024)
-                while (l):
-                    conn.send(l)
-                    print('Sent ',repr(l))
+                value=value.strip()
+                if os.path.isfile(value):
+                    filename=value
+                    f = open(filename,'rb')
                     l = f.read(1024)
-                    f.close()
-                print('Done sending')
+                    while (l):
+                        conn.send(l)
+                        l = f.read(1024)
+                        f.close()
+                    print('Done sending')
+                else:
+                    conn.send("#101")
                 #conn.send('Thank you for connecting')'''
             
             conn.close()
+
+#Error codes
+# 101 for file not found
 
 def main():
     server = Server()
