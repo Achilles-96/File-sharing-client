@@ -46,5 +46,8 @@ class Server:
             
             conn.close()
 
-server = Server()
-server.runServer()
+def main():
+    server = Server()
+    server.runServer()
+
+main()
