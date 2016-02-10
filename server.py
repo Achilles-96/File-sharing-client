@@ -66,11 +66,9 @@ class Server:
             
             conn.close()
 
-#Error codes
+# Error codes
 # 101 for file not found
 
 def main():
     server = Server()
     server.runServer()
-
-main()

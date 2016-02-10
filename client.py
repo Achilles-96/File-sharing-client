@@ -52,5 +52,3 @@ def main():
     print connect.send("File List longlist",False)
     print connect.send("File List regex",False)
     print connect.send("Select File: 8",True)
-
-main()
