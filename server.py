@@ -72,8 +72,8 @@ class Server:
 
                 if "regex" in data:
                     try:
-                        regex = data.split(':')[1]
-                        files = glob.glob(regex)
+                        regex = data.split('?')[1]
+                        files = glob.glob(regex.strip())
                         for f in files:
                             conn.send(f + '\n')
                     except Exception,e:
