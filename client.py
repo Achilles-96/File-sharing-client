@@ -23,32 +23,37 @@ class Client:
         s.send(message)
         
         if file_request:
-            with open(message.split(':')[1].strip(), 'wb') as f:
-                while True:
-                    data = s.recv(1024)
-                    if data == "#101":
-                        validity = False
-                    if not data:
-                        break
-                    # write data to a file
-                    if validity == True:
-                        f.write(data)
-            f.close()
-            s.close()
-            if validity:
-                return "File read"
-            else:
-                return "File not found"
+            try:
+                with open(message.split(':')[1].strip(), 'wb') as f:
+                    while True:
+                        data = s.recv(1024)
+                        if data == "#101":
+                            validity = False
+                        if not data:
+                            break
+                        # write data to a file
+                        if validity == True:
+                            f.write(data)
+                f.close()
+                s.close()
+                if validity:
+                    return "File read"
+                else:
+                    return "File not found"
+            except Exception,e:
+                print 'Unable to fetch file from server, please enter the correct command'
 
-        else:    
-            while receiving:
-                data_cur = s.recv(1024)
-                if not data_cur:
-                    receiving = False
-                data += data_cur
-            s.close()
-            return data
-
+        else:
+            try:
+                while receiving:
+                    data_cur = s.recv(1024)
+                    if not data_cur:
+                        receiving = False
+                    data += data_cur
+                s.close()
+                return data
+            except Exception,e:
+                print 'Unable to fetch data from server'
 
 def main(ip):
     connect = Client()
