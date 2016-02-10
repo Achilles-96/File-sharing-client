@@ -13,6 +13,7 @@
 # server.py
 
 import socket                   # Import socket module
+import os
 
 port = 60000                    # Reserve a port for your service.
 s = socket.socket()             # Create a socket object
@@ -28,6 +29,9 @@ while True:
     print 'Got connection from', addr
     data = conn.recv(1024)
     print('Server received', repr(data))
+
+    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    conn.send(' '.join(files))  #send file list to server
 
     filename='mytext.txt'
     f = open(filename,'rb')
