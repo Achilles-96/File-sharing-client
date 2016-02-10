@@ -2,7 +2,7 @@
 
 import socket                   # Import socket module
 
-class Connect:
+class Client:
     
     def connect(self):
         s = socket.socket()
@@ -10,40 +10,42 @@ class Connect:
         s.connect((socket.gethostname(),60000))
         return s
 
-    def send(self, message):
+    def send(self, message, file_request):
         s = self.connect()
         receiving = True
         data = ""
-
-        s.send(message)
-
-        while receiving:
-            data_cur = s.recv(1024)
-            data += data_cur
-            print ('received: ' + data)
-            if not data_cur:
-                receiving = False
         
-        s.close()
-        return data
+        s.send(message)
+        
+        if file_request:
+            with open('received_file', 'wb') as f:
+                print 'file opened'
+                while True:
+                    print('receiving data...')
+                    data = s.recv(1024)
+                    print('data=%s', (data))
+                    if not data:
+                        break
+                    # write data to a file
+                    f.write(data)
+            f.close()
+            s.close()
+            return "File read"
 
-'''with open('received_file', 'wb') as f:
-    print 'file opened'
-    while True:
-        print('receiving data...')
-        data = s.recv(1024)
-        print('data=%s', (data))
-        if not data:
-            break
-        # write data to a file
-        f.write(data)
+        else:    
+            while receiving:
+                data_cur = s.recv(1024)
+                if not data_cur:
+                    receiving = False
+                data += data_cur
+            s.close()
+            return data
 
-f.close()
-print('Successfully get the file')'''
 
 def main():
-    connect = Connect()
-    print connect.send("File List")
-    print connect.send("File List")
+    connect = Client()
+    print connect.send("File List",False)
+    print connect.send("File List",False)
+    print connect.send("Select File: 8",True)
 
 main()
