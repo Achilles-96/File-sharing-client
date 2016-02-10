@@ -1,6 +1,7 @@
 # server.py
 
 import socket                   # Import socket module
+import os
 
 class Server:
 
@@ -27,7 +28,8 @@ class Server:
                 conn.send("Hello client!")
 
             if data=="File List":
-                conn.send("My file list")
+                files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                conn.send(' '.join(files))  #send file list to server
 
             if "Select File" in data:
                 command,value = data.split(':')
