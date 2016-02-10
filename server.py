@@ -6,6 +6,7 @@ import time
 import mimetypes
 import hashlib
 from datetime import datetime
+import glob
 
 def md5(fname):
     hash_value = hashlib.md5()
@@ -70,7 +71,13 @@ class Server:
                         print 'An error occured while fetching the filelist, make sure you enter the correct command'
 
                 if "regex" in data:
-                    pass
+                    try:
+                        regex = data.split(':')[1]
+                        files = glob.glob(regex)
+                        for f in files:
+                            conn.send(f + '\n')
+                    except Exception,e:
+                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
 
             if "Select File" in data:
                 try:
