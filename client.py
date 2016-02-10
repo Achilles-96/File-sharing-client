@@ -55,7 +55,7 @@ def main(ip):
     while True:
         input_raw = raw_input()
         if 'File List shortlist' in input_raw:
-            res = connect.send("File List shortlist",False, ip)
+            res = connect.send("File List shortlist ,Wed Feb 10 15:51:38 2016,Wed Feb 10 15:51:54 2016",False, ip)
             if res:
                 print res
             else:
@@ -78,3 +78,5 @@ def main(ip):
                 print res
             else:
                 print 'Failed to fetch file'
+
+main()
