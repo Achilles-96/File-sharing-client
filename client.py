@@ -72,7 +72,7 @@ def main(ip):
             else:
                 print 'Failed to fetch longlist'
         if 'File List regex' in input_raw:
-            res = connect.send("File List regex",False, ip)
+            res = connect.send(input_raw,False, ip)
             if res:
                 print res
             else:
