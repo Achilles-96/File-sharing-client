@@ -2,6 +2,8 @@
 
 import socket                   # Import socket module
 import os
+import time
+import mimetypes
 
 class Server:
 
@@ -27,9 +29,24 @@ class Server:
             if data=="Hello server!":
                 conn.send("Hello client!")
 
-            if data=="File List":
-                files = [f for f in os.listdir('.') if os.path.isfile(f) and f[0]!='.']
-                conn.send('\t'.join(files))  #send file list to server
+            if "File List" in data:
+                if "shortlist" in data:
+                    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                    conn.send(' '.join(files))  #send file list to server
+                if "longlist" in data:
+                    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                    for f in files:
+                        statinfo = os.stat(f)
+                        size = str(statinfo.st_size)
+                        modified_time = time.ctime(os.path.getmtime(f))
+                        created_time = time.ctime(os.path.getctime(f))
+                        type_of_file, encoding = mimetypes.guess_type(f,True)
+                        if type_of_file:
+                            conn.send(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + type_of_file + '\n')  #send file list to server
+                        else:
+                            conn.send(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + 'None' + '\n')  #send file list to server
+                if "regex" in data:
+                    pass
 
             if "Select File" in data:
                 command,value = data.split(':')
