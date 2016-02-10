@@ -78,5 +78,3 @@ def main(ip):
                 print res
             else:
                 print 'Failed to fetch file'
-
-main()
