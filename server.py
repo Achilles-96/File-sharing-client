@@ -1,15 +1,3 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-# vim:fenc=utf-8
-#
-# Copyright © 2016 vishalapr <vishalapr@vishalapr-Lenovo-G50-70>
-#
-# Distributed under terms of the MIT license.
-
-"""
-
-"""
-
 # server.py
 
 import socket                   # Import socket module
@@ -29,7 +17,13 @@ while True:
     data = conn.recv(1024)
     print('Server received', repr(data))
 
-    filename='mytext.txt'
+    if data=="Hello server!":
+        conn.send("Hello client!")
+
+    if data=="File List":
+        conn.send("My file list")
+
+    '''filename='mytext.txt'
     f = open(filename,'rb')
     l = f.read(1024)
     while (l):
@@ -39,5 +33,5 @@ while True:
     f.close()
 
     print('Done sending')
-    #conn.send('Thank you for connecting')
+    #conn.send('Thank you for connecting')'''
     conn.close()
