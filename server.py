@@ -4,7 +4,15 @@ import socket                   # Import socket module
 import os
 import time
 import mimetypes
+import hashlib
 from datetime import datetime
+
+def md5(fname):
+    hash_value = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_value.update(chunk)
+    return hash_value.hexdigest()
 
 class Server:
 
@@ -33,9 +41,9 @@ class Server:
             if "File List" in data:
                 if "shortlist" in data:
                     try:
-                        data_arr = data.split(',')
-                        time_l = datetime.strptime(data_arr[1], "%a %b %d %H:%M:%S %Y")
-                        time_r = datetime.strptime(data_arr[2], "%a %b %d %H:%M:%S %Y")
+                        data_arr = data.split('?')
+                        time_l = datetime.strptime(data_arr[1].strip(), "%a %b %d %H:%M:%S %Y")
+                        time_r = datetime.strptime(data_arr[2].strip(), "%a %b %d %H:%M:%S %Y")
                         files = [f for f in os.listdir('.') if os.path.isfile(f)]
                         for f in files:
                             created_time = time.ctime(os.path.getctime(f))
@@ -66,10 +74,16 @@ class Server:
 
             if "Select File" in data:
                 try:
-                    command,value = data.split(':')
+                    command,value = data.split('?')
                     value=value.strip()
                     if os.path.isfile(value):
                         filename=value
+                        statinfo = os.stat(filename)
+                        size = str(statinfo.st_size)
+                        modified_time = time.ctime(os.path.getmtime(filename))
+                        created_time = time.ctime(os.path.getctime(filename))
+                        hash_value = md5(filename)
+                        conn.send(filename+'?'+size+'?'+modified_time+'?'+hash_value+'?')
                         f = open(filename,'rb')
                         l = f.read(1024)
                         while (l):

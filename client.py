@@ -24,16 +24,24 @@ class Client:
         
         if file_request:
             try:
-                with open(message.split(':')[1].strip(), 'wb') as f:
+                with open(message.split('?')[1].strip(), 'wb') as f:
                     while True:
                         data = s.recv(1024)
                         if data == "#101":
                             validity = False
                         if not data:
                             break
-                        # write data to a file
-                        if validity == True:
+                        if len(data.split('?'))>4:
+                            print 'Received File'
+                            print data.split('?')[0]
+                            print data.split('?')[1]
+                            print data.split('?')[2]
+                            print data.split('?')[3]
+                            print 'End of header'
+                            f.write(data.split('?')[4])
+                        elif validity == True:
                             f.write(data)
+                        # write data to a file
                 f.close()
                 s.close()
                 if validity:
@@ -60,7 +68,7 @@ def main(ip):
     while True:
         input_raw = raw_input()
         if 'File List shortlist' in input_raw:
-            res = connect.send("File List shortlist ,Wed Feb 10 15:51:38 2016,Wed Feb 10 15:51:54 2016",False, ip)
+            res = connect.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2016",False, ip)
             if res!=None:
                 print res
             else:
