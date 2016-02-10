@@ -23,7 +23,7 @@ class Client:
         s.send(message)
         
         if file_request:
-            with open('received_file', 'wb') as f:
+            with open(message.split(':')[1].strip(), 'wb') as f:
                 while True:
                     data = s.recv(1024)
                     if data == "#101":
