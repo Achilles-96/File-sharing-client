@@ -48,7 +48,7 @@ class Client:
 
 def main():
     connect = Client()
-    print connect.send("File List shortlist",False)
+    print connect.send("File List shortlist ,Wed Feb 10 15:51:38 2016,Wed Feb 10 15:51:54 2016",False)
     print connect.send("File List longlist",False)
     print connect.send("File List regex",False)
     print connect.send("Select File: 8",True)

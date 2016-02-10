@@ -4,6 +4,7 @@ import socket                   # Import socket module
 import os
 import time
 import mimetypes
+from datetime import datetime
 
 class Server:
 
@@ -31,8 +32,16 @@ class Server:
 
             if "File List" in data:
                 if "shortlist" in data:
+                    data_arr = data.split(',')
+                    time_l = datetime.strptime(data_arr[1], "%a %b %d %H:%M:%S %Y")
+                    time_r = datetime.strptime(data_arr[2], "%a %b %d %H:%M:%S %Y")
                     files = [f for f in os.listdir('.') if os.path.isfile(f)]
-                    conn.send(' '.join(files))  #send file list to server
+                    for f in files:
+                        created_time = time.ctime(os.path.getctime(f))
+                        act_time = datetime.strptime(created_time, "%a %b %d %H:%M:%S %Y")
+                        if act_time <= time_r and act_time >= time_l:
+                            conn.send(f + '\n')
+
                 if "longlist" in data:
                     files = [f for f in os.listdir('.') if os.path.isfile(f)]
                     for f in files:
