@@ -6,11 +6,29 @@ import time
 import mimetypes
 from datetime import datetime
 
-class Server:
+class udp_server:
+
+    def init(self,ip):
+        port = 60001
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)             # Create a socket object
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((ip, port))
+        return s
+
+    def runServer(self,ip):
+        s = self.init(ip)
+        print 'UDP server listening....'
+
+        while True:
+            data, addr = s.recvfrom(1024)
+            print data, addr
+
+
+class tcp_server:
 
     def init(self,ip):
         port = 60000                    # Reserve a port for your service.
-        s = socket.socket()             # Create a socket object
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)             # Create a socket object
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         host = socket.gethostname()     # Get local machine name
         s.bind((ip, port))            # Bind to the port
@@ -19,7 +37,7 @@ class Server:
 
     def runServer(self,ip):
         s = self.init(ip)
-        print 'Server listening....'
+        print 'TCP server listening....'
 
         while True:
             conn, addr = s.accept()     # Establish connection with client.
@@ -87,6 +105,10 @@ class Server:
 # Error codes
 # 101 for file not found
 
-def main(ip):
-    server = Server()
+def tcp_main(ip):
+    server = tcp_server()
+    server.runServer(ip)
+
+def udp_main(ip):
+    server = udp_server()
     server.runServer(ip)
