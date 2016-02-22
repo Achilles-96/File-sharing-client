@@ -20,9 +20,9 @@ def start_client(threadName):
 
 try:
     thread.start_new_thread( start_tcp_server, ("Server", ) )
-    time.sleep(2)
+    time.sleep(1)
     thread.start_new_thread( start_udp_server, ("Server", ) )
-    time.sleep(2)
+    time.sleep(1)
     thread.start_new_thread( start_client, ("Client", ) )
 except:
     print "Error: unable to start thread"

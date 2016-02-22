@@ -21,8 +21,59 @@ class udp_server:
 
         while True:
             data, addr = s.recvfrom(1024)
-            print data, addr
+            print data + 'In server'
+            if data == 'Hello server':
+                s.sendto('Hello Client', addr)
+            if "File List" in data:
+                if "shortlist" in data:
+                    try:
+                        data_arr = data.split(',')
+                        time_l = datetime.strptime(data_arr[1], "%a %b %d %H:%M:%S %Y")
+                        time_r = datetime.strptime(data_arr[2], "%a %b %d %H:%M:%S %Y")
+                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        for f in files:
+                            created_time = time.ctime(os.path.getctime(f))
+                            act_time = datetime.strptime(created_time, "%a %b %d %H:%M:%S %Y")
+                            if act_time <= time_r and act_time >= time_l:
+                                s.sendto(f + '\n', addr)
+                        s.sendto('#END#',addr)
+                    except Exception,e:
+                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                if "longlist" in data:
+                    try:
+                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        for f in files:
+                            statinfo = os.stat(f)
+                            size = str(statinfo.st_size)
+                            modified_time = time.ctime(os.path.getmtime(f))
+                            created_time = time.ctime(os.path.getctime(f))
+                            type_of_file, encoding = mimetypes.guess_type(f,True)
+                            if type_of_file:
+                                s.sendto(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + type_of_file + '\n', addr)  #send file list to server
+                            else:
+                                s.sendto(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + 'None' + '\n', addr)  #send file list to server
+                        s.sendto('#END#',addr)
+                    except Exception,e:
+                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
 
+            if "Select File" in data:
+                try:
+                    command,value = data.split(':')
+                    value=value.strip()
+                    if os.path.isfile(value):
+                        filename=value
+                        f = open(filename,'rb')
+                        l = f.read(1024)
+                        while (l):
+                            s.sendto(l, addr)
+                            l = f.read(1024)
+                            f.close()
+                        print('Done sending')
+                        s.sendto('#END#',addr)
+                    else:
+                        s.send("#101", addr)
+                except Exception,e:
+                    print 'An error occured while sending the file, make sure you enter the correct command'
 
 class tcp_server:
 
