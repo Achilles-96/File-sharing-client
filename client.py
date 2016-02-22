@@ -64,30 +64,36 @@ class Client:
                 print 'Unable to fetch data from server'
 
 def main(ip):
-    connect = Client()
+    client = Client()
     while True:
         input_raw = raw_input()
         if 'File List shortlist' in input_raw:
-            res = connect.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2016",False, ip)
+            res = client.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2016", False, ip)
             if res!=None:
                 print res
             else:
                 print 'Failed to fetch shorlist'
         if 'File List longlist' in input_raw:
-            res = connect.send("File List longlist",False, ip)
+            res = client.send("File List longlist", False, ip)
             if res!=None:
                 print res
             else:
                 print 'Failed to fetch longlist'
         if 'File List regex' in input_raw:
-            res = connect.send(input_raw,False, ip)
+            res = client.send(input_raw, False, ip)
             if res!=None:
                 print res
             else:
                 print 'Failed to fetch regex'
         if 'Select File' in input_raw:
-            res = connect.send(input_raw,True, ip)
+            res = client.send(input_raw, True, ip)
             if res!=None:
                 print res
             else:
                 print 'Failed to fetch file'
+        if 'Hash' in input_raw:
+            res = client.send(input_raw, False, ip)
+            if res!=None:
+                print res
+            else:
+                print 'Failed to get hash'
