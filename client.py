@@ -17,6 +17,7 @@ class udp_client:
         receiving = True
         data = ""
         validity = True
+        header = True
 
         s.sendto(message, ( ip, 60001))
 
@@ -32,7 +33,7 @@ class udp_client:
                             validity = False
                         if not data:
                             break
-                        if len(data.split('?'))>4:
+                        if header and len(data.split('?'))>4:
                             print 'Received File'
                             print data.split('?')[0]
                             print data.split('?')[1]
@@ -40,6 +41,7 @@ class udp_client:
                             print data.split('?')[3]
                             print 'End of header'
                             f.write(data.split('?')[4])
+                            header = False
                         elif validity == True:
                             f.write(data)
                 f.close()
@@ -82,6 +84,7 @@ class tcp_client:
         receiving = True
         data = ""
         validity = True
+        header = True
 
         s.send(message)
         
@@ -94,7 +97,7 @@ class tcp_client:
                             validity = False
                         if not data:
                             break
-                        if len(data.split('?'))>4:
+                        if header and len(data.split('?'))>4:
                             print 'Received File'
                             print data.split('?')[0]
                             print data.split('?')[1]
@@ -102,6 +105,7 @@ class tcp_client:
                             print data.split('?')[3]
                             print 'End of header'
                             f.write(data.split('?')[4])
+                            header = False
                         elif validity == True:
                             f.write(data)
                         # write data to a file
@@ -141,36 +145,37 @@ def main(ip):
         input_raw = raw_input()
         if 'File List shortlist' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017",False, ip)
+                #File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017
+                res = connect_tcp.send(input_raw, False, ip)
             elif protocol == 2:
-                res = connect_udp.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017",False, ip)
+                res = connect_udp.send(input_raw, False, ip)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch shortlist'
         if 'File List longlist' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List longlist",False, ip)
+                res = connect_tcp.send("File List longlist", False, ip)
             elif protocol == 2:
-                res = connect_udp.send("File List longlist",False, ip)
+                res = connect_udp.send("File List longlist", False, ip)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch longlist'
         if 'File List regex' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send(input_raw,False, ip)
+                res = connect_tcp.send(input_raw, False, ip)
             elif protocol == 2:
-                res = connect_udp.send(input_raw,False, ip)
+                res = connect_udp.send(input_raw, False, ip)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch regex'
         if 'Select File' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send(input_raw,True, ip)
+                res = connect_tcp.send(input_raw, True, ip)
             elif protocol == 2:
-                res = connect_udp.send(input_raw,True, ip)
+                res = connect_udp.send(input_raw, True, ip)
             if res:
                 print res
             else:
