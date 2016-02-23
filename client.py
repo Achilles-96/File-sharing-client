@@ -152,9 +152,9 @@ def main(ip):
                 print 'No files present or failed to fetch longlist'
         if 'File List regex' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List regex",False, ip)
+                res = connect_tcp.send(input_raw,False, ip)
             elif protocol == 2:
-                res = connect_udp.send("File List regex",False, ip)
+                res = connect_udp.send(input_raw,False, ip)
             if res:
                 print res
             else:

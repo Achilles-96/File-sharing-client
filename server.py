@@ -65,6 +65,16 @@ class udp_server:
                         s.sendto('#END#',addr)
                     except Exception,e:
                         print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                if "regex" in data:
+                    try:
+                        print data
+                        regex = data.split('?')[1]
+                        files = glob.glob(regex.strip())
+                        for f in files:
+                            s.sendto(f + '\n', addr)
+                        s.sendto('#END#', addr)
+                    except Exception,e:
+                        print str(e) + ' An error occured while fetching the filelist, make sure you enter the correct command'
 
             if "Select File" in data:
                 try:
