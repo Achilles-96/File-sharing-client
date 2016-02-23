@@ -83,6 +83,12 @@ class udp_server:
                     value=value.strip()
                     if os.path.isfile(value):
                         filename=value
+                        statinfo = os.stat(filename)
+                        size = str(statinfo.st_size)
+                        modified_time = time.ctime(os.path.getmtime(filename))
+                        created_time = time.ctime(os.path.getctime(filename))
+                        hash_value = md5(filename)
+                        s.sendto(filename+'?'+size+'?'+modified_time+'?'+hash_value+'?', addr)
                         f = open(filename,'rb')
                         l = f.read(1024)
                         while (l):
@@ -90,11 +96,11 @@ class udp_server:
                             l = f.read(1024)
                         f.close()
                         print('Done sending')
-                        s.sendto('#END#',addr)
                     else:
-                        s.send("#101", addr)
+                        conn.send("#101")
+                    s.sendto('#END#',addr)
                 except Exception,e:
-                    print 'An error occured while sending the file, make sure you enter the correct command'
+                    print 'An error occured while fetching the file, make sure you enter the correct command'
             
             if "Hash" in data:
                 try:

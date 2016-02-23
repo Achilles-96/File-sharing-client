@@ -32,9 +32,15 @@ class udp_client:
                             validity = False
                         if not data:
                             break
-                        # write data to a file
-                        if validity == True:
-                            print data
+                        if len(data.split('?'))>4:
+                            print 'Received File'
+                            print data.split('?')[0]
+                            print data.split('?')[1]
+                            print data.split('?')[2]
+                            print data.split('?')[3]
+                            print 'End of header'
+                            f.write(data.split('?')[4])
+                        elif validity == True:
                             f.write(data)
                 f.close()
                 s.close()
@@ -84,7 +90,6 @@ class tcp_client:
                 with open('temper' + message.split('?')[1].strip(), 'wb') as f:
                     while True:
                         data = s.recv(1024)
-                        print data,'Hello'
                         if data == "#101":
                             validity = False
                         if not data:
