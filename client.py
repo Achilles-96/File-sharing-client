@@ -124,17 +124,23 @@ def main(ip):
     connect_udp = udp_client()
     while True:
         print '1.TCP 2.UDP'
-        protocol = input()
+        try:
+            protocol = input()
+        except Exception,e:
+            print 'Please enter a number corresponding to the protocol'
+            continue
+        if protocol != 1 and protocol != 2:
+            continue
         input_raw = raw_input()
         if 'File List shortlist' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List shortlist ,Wed Feb 10 15:51:38 2016,Wed Feb 10 15:51:54 2016",False, ip)
+                res = connect_tcp.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017",False, ip)
             elif protocol == 2:
-                res = connect_udp.send("File List shortlist ,Wed Feb 10 15:51:38 2016,Wed Feb 10 15:51:54 2016",False, ip)
+                res = connect_udp.send("File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017",False, ip)
             if res:
                 print res
             else:
-                print 'Failed to fetch shorlist'
+                print 'No files present or failed to fetch shortlist'
         if 'File List longlist' in input_raw:
             if protocol == 1:
                 res = connect_tcp.send("File List longlist",False, ip)
@@ -143,7 +149,7 @@ def main(ip):
             if res:
                 print res
             else:
-                print 'Failed to fetch longlist'
+                print 'No files present or failed to fetch longlist'
         if 'File List regex' in input_raw:
             if protocol == 1:
                 res = connect_tcp.send("File List regex",False, ip)
@@ -152,7 +158,7 @@ def main(ip):
             if res:
                 print res
             else:
-                print 'Failed to fetch regex'
+                print 'No files present or failed to fetch regex'
         if 'Select File' in input_raw:
             if protocol == 1:
                 res = connect_tcp.send(input_raw,True, ip)

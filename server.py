@@ -36,9 +36,9 @@ class udp_server:
             if "File List" in data:
                 if "shortlist" in data:
                     try:
-                        data_arr = data.split(',')
-                        time_l = datetime.strptime(data_arr[1], "%a %b %d %H:%M:%S %Y")
-                        time_r = datetime.strptime(data_arr[2], "%a %b %d %H:%M:%S %Y")
+                        data_arr = data.split('?')
+                        time_l = datetime.strptime(data_arr[1].strip(), "%a %b %d %H:%M:%S %Y")
+                        time_r = datetime.strptime(data_arr[2].strip(), "%a %b %d %H:%M:%S %Y")
                         files = [f for f in os.listdir('.') if os.path.isfile(f)]
                         for f in files:
                             created_time = time.ctime(os.path.getctime(f))
@@ -48,6 +48,7 @@ class udp_server:
                         s.sendto('#END#',addr)
                     except Exception,e:
                         print 'An error occured while fetching the filelist, make sure you enter the correct command'
+
                 if "longlist" in data:
                     try:
                         files = [f for f in os.listdir('.') if os.path.isfile(f)]
