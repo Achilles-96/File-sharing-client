@@ -68,7 +68,7 @@ class udp_server:
 
             if "Select File" in data:
                 try:
-                    command,value = data.split(':')
+                    command,value = data.split('?')
                     value=value.strip()
                     if os.path.isfile(value):
                         filename=value
@@ -77,13 +77,30 @@ class udp_server:
                         while (l):
                             s.sendto(l, addr)
                             l = f.read(1024)
-                            f.close()
+                        f.close()
                         print('Done sending')
                         s.sendto('#END#',addr)
                     else:
                         s.send("#101", addr)
                 except Exception,e:
                     print 'An error occured while sending the file, make sure you enter the correct command'
+            
+            if "Hash" in data:
+                try:
+                    if "single" in data:
+                        command1,filename = data.split('?')
+                        filename = filename.strip()
+                        if os.path.isfile(filename):
+                            s.sendto(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)), addr)
+                        else:
+                            s.sendto("#101", addr)
+                    elif "all" in data:
+                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        for f in files:
+                            s.sendto(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n', addr)
+                except Exception,e:
+                    print 'An error occured while getting the hash of the file(s), make sure you enter the correct command'
+
 
 class tcp_server:
 
@@ -150,7 +167,6 @@ class tcp_server:
                         print 'An error occured while fetching the filelist, make sure you enter the correct command'
 
             if "Select File" in data:
-                try:
                     command,value = data.split('?')
                     value=value.strip()
                     if os.path.isfile(value):
@@ -166,12 +182,10 @@ class tcp_server:
                         while (l):
                             conn.send(l)
                             l = f.read(1024)
-                            f.close()
+                        f.close()
                         print('Done sending')
                     else:
                         conn.send("#101")
-                except Exception,e:
-                    print 'An error occured while sending the file, make sure you enter the correct command'
 
             if "Hash" in data:
                 try:

@@ -22,7 +22,7 @@ class udp_client:
 
         if file_request:
             try:
-                with open('temper1' + message.split(':')[1].strip(), 'wb') as f:
+                with open('temper1' + message.split('?')[1].strip(), 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
                         if data == '#END#':
@@ -80,9 +80,10 @@ class tcp_client:
         
         if file_request:
             try:
-                with open('temper' + message.split(':')[1].strip(), 'wb') as f:
+                with open('temper' + message.split('?')[1].strip(), 'wb') as f:
                     while True:
                         data = s.recv(1024)
+                        print data,'Hello'
                         if data == "#101":
                             validity = False
                         if not data:
@@ -152,9 +153,9 @@ def main(ip):
                 print 'No files present or failed to fetch longlist'
         if 'File List regex' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List regex",False, ip)
+                res = connect_tcp.send(input_raw,False, ip)
             elif protocol == 2:
-                res = connect_udp.send("File List regex",False, ip)
+                res = connect_udp.send(input_raw,False, ip)
             if res:
                 print res
             else:
