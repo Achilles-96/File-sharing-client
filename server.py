@@ -69,10 +69,14 @@ class udp_server:
 
                 if "regex" in data:
                     try:
+                        invalid = False
                         regex = data.split('?')[1].strip()
-                        if regex == "*":
+                        try:
+                            re.search(regex,"")
+                        except Exception,e:
+                            invalid = True
                             print 'Invalid regex'
-                        else:
+                        if not invalid:
                             files = [f for f in os.listdir('.') if os.path.isfile(f)]
                             for f in files:
                                 if re.search(regex,f):
@@ -183,10 +187,14 @@ class tcp_server:
 
                 if "regex" in data:
                     try:
+                        invalid = False
                         regex = data.split('?')[1].strip()
-                        if regex == "*":
+                        try:
+                            re.search(regex,"")
+                        except Exception,e:
+                            invalid = True
                             print 'Invalid regex'
-                        else:
+                        if not invalid:
                             files = [f for f in os.listdir('.') if os.path.isfile(f)]
                             for f in files:
                                 if re.search(regex,f):
