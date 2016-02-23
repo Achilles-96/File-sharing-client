@@ -51,6 +51,7 @@ class udp_client:
                     data_cur, addr = s.recvfrom(1024)
                     if data_cur == '#END#':
                         receiving = False
+                        break
                     data += data_cur
                 s.close()
                 return data

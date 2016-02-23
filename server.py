@@ -66,6 +66,17 @@ class udp_server:
                     except Exception,e:
                         print 'An error occured while fetching the filelist, make sure you enter the correct command'
 
+                if "regex" in data:
+                    try:
+                        print data
+                        regex = data.split('?')[1]
+                        files = glob.glob(regex.strip())
+                        for f in files:
+                            s.sendto(f + '\n', addr)
+                        s.sendto('#END#', addr)
+                    except Exception,e:
+                        print str(e) + ' An error occured while fetching the filelist, make sure you enter the correct command'
+
             if "Select File" in data:
                 try:
                     command,value = data.split('?')
@@ -94,10 +105,12 @@ class udp_server:
                             s.sendto(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)), addr)
                         else:
                             s.sendto("#101", addr)
+                        s.sendto('#END#',addr)
                     elif "all" in data:
                         files = [f for f in os.listdir('.') if os.path.isfile(f)]
                         for f in files:
                             s.sendto(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n', addr)
+                        s.sendto('#END#',addr)
                 except Exception,e:
                     print 'An error occured while getting the hash of the file(s), make sure you enter the correct command'
 
@@ -167,6 +180,7 @@ class tcp_server:
                         print 'An error occured while fetching the filelist, make sure you enter the correct command'
 
             if "Select File" in data:
+                try:
                     command,value = data.split('?')
                     value=value.strip()
                     if os.path.isfile(value):
@@ -186,6 +200,8 @@ class tcp_server:
                         print('Done sending')
                     else:
                         conn.send("#101")
+                except Exception,e:
+                    print 'An error occured while fetching the file, make sure you enter the correct command'
 
             if "Hash" in data:
                 try:
