@@ -12,7 +12,7 @@ class udp_client:
         try:
             s =  self.connect(ip)
         except Exception, e:
-            print 'Failed to create socket'
+            print str(e) + ' : Failed to create socket'
             return
         receiving = True
         data = ""
@@ -51,8 +51,7 @@ class udp_client:
                 else:
                     return "File not found"
             except Exception,e:
-                print e
-                print 'Unable to fetch file from server, please enter the correct command'
+                print str(e) + ' : Unable to fetch file from server, please enter the correct command'
         else:
             try:
                 while receiving:
@@ -64,7 +63,7 @@ class udp_client:
                 s.close()
                 return data
             except Exception,e:
-                print 'Unable to fetch data from server'
+                print str(e) + ' : Unable to fetch data from server'
 
 
 class tcp_client:
@@ -79,7 +78,7 @@ class tcp_client:
         try:
             s = self.connect(ip)
         except Exception, e:
-            print 'Failed to connect'
+            print str(e) + ' : Failed to connect'
             return
         receiving = True
         data = ""
@@ -116,7 +115,7 @@ class tcp_client:
                 else:
                     return "File not found"
             except Exception,e:
-                print 'Unable to fetch file from server, please enter the correct command'
+                print str(e) + ' : Unable to fetch file from server, please enter the correct command'
 
         else:
             try:
@@ -128,7 +127,7 @@ class tcp_client:
                 s.close()
                 return data
             except Exception,e:
-                print 'Unable to fetch data from server'
+                print str(e) + ' : Unable to fetch data from server'
 
 def main(ip):
     connect_tcp = tcp_client()
@@ -138,7 +137,7 @@ def main(ip):
         try:
             protocol = input()
         except Exception,e:
-            print 'Please enter a number corresponding to the protocol'
+            print str(e) + ' : Please enter a number corresponding to the protocol'
             continue
         if protocol != 1 and protocol != 2:
             continue

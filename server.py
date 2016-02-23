@@ -7,6 +7,7 @@ import mimetypes
 import hashlib
 from datetime import datetime
 import glob
+import re
 
 def md5(fname):
     hash_value = hashlib.md5()
@@ -47,7 +48,7 @@ class udp_server:
                                 s.sendto(f + '\n', addr)
                         s.sendto('#END#',addr)
                     except Exception,e:
-                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                        print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
 
                 if "longlist" in data:
                     try:
@@ -64,18 +65,22 @@ class udp_server:
                                 s.sendto(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + 'None' + '\n', addr)  #send file list to server
                         s.sendto('#END#',addr)
                     except Exception,e:
-                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                        print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
 
                 if "regex" in data:
                     try:
-                        print data
-                        regex = data.split('?')[1]
-                        files = glob.glob(regex.strip())
-                        for f in files:
-                            s.sendto(f + '\n', addr)
+                        regex = data.split('?')[1].strip()
+                        if regex == "*":
+                            print 'Invalid regex'
+                        else:
+                            files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                            for f in files:
+                                if re.search(regex,f):
+                                    s.sendto(f + '\n', addr)
                         s.sendto('#END#', addr)
                     except Exception,e:
-                        print str(e) + ' An error occured while fetching the filelist, make sure you enter the correct command'
+                        print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
+                        continue
 
             if "Select File" in data:
                 try:
@@ -100,7 +105,7 @@ class udp_server:
                         conn.send("#101")
                     s.sendto('#END#',addr)
                 except Exception,e:
-                    print 'An error occured while fetching the file, make sure you enter the correct command'
+                    print str(e) + ' : An error occured while fetching the file, make sure you enter the correct command'
             
             if "Hash" in data:
                 try:
@@ -118,7 +123,7 @@ class udp_server:
                             s.sendto(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n', addr)
                         s.sendto('#END#',addr)
                 except Exception,e:
-                    print 'An error occured while getting the hash of the file(s), make sure you enter the correct command'
+                    print str(e) + ' : An error occured while getting the hash of the file(s), make sure you enter the correct command'
 
 
 class tcp_server:
@@ -158,7 +163,7 @@ class tcp_server:
                             if act_time <= time_r and act_time >= time_l:
                                 conn.send(f + '\n')
                     except Exception,e:
-                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                        print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
 
                 if "longlist" in data:
                     try:
@@ -174,16 +179,21 @@ class tcp_server:
                             else:
                                 conn.send(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + 'None' + '\n')  #send file list to server
                     except Exception,e:
-                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                        print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
 
                 if "regex" in data:
                     try:
-                        regex = data.split('?')[1]
-                        files = glob.glob(regex.strip())
-                        for f in files:
-                            conn.send(f + '\n')
+                        regex = data.split('?')[1].strip()
+                        if regex == "*":
+                            print 'Invalid regex'
+                        else:
+                            files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                            for f in files:
+                                if re.search(regex,f):
+                                    conn.send(f + '\n')
                     except Exception,e:
-                        print 'An error occured while fetching the filelist, make sure you enter the correct command'
+                        print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
+                        continue
 
             if "Select File" in data:
                 try:
@@ -207,7 +217,7 @@ class tcp_server:
                     else:
                         conn.send("#101")
                 except Exception,e:
-                    print 'An error occured while fetching the file, make sure you enter the correct command'
+                    print str(e) + ' : An error occured while fetching the file, make sure you enter the correct command'
 
             if "Hash" in data:
                 try:
@@ -223,7 +233,7 @@ class tcp_server:
                         for f in files:
                             conn.send(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n')
                 except Exception,e:
-                    print 'An error occured while getting the hash of the file(s), make sure you enter the correct command'
+                    print str(e) + ' : An error occured while getting the hash of the file(s), make sure you enter the correct command'
             
             conn.close()
 
