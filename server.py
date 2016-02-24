@@ -92,7 +92,7 @@ class udp_server:
                     command,value = data.split('?')
                     value=value.strip()
                     file_abspath = os.path.abspath(directory + value)
-                    if file_abspath.find(directory) != 0:
+                    if file_abspath.find(os.path.abspath(directory)) != 0:
                         s.sendto('#102', addr)
                     elif os.path.isfile(directory + value):
                         filename=directory + value
@@ -210,7 +210,7 @@ class tcp_server:
                     command,value = data.split('?')
                     value=value.strip()
                     file_abspath = os.path.abspath(directory + value)
-                    if file_abspath.find(directory) != 0:
+                    if file_abspath.find(os.path.abspath(directory)) != 0:
                         conn.send('#102')
                     elif os.path.isfile(directory + value):
                         filename=directory + value
