@@ -117,10 +117,10 @@ class udp_server:
             if "FileHash" in data:
                 try:
                     if "verify" in data:
-                        command1,filename = data.split('?')
-                        filename = directory + filename.strip()
+                        command1,filenameold = data.split('?')
+                        filename = directory + filenameold.strip()
                         if os.path.isfile(filename):
-                            s.sendto(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)), addr)
+                            s.sendto(filenameold + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)), addr)
                         else:
                             s.sendto("#101", addr)
                         s.sendto('#END#',addr)
@@ -234,10 +234,10 @@ class tcp_server:
             if "FileHash" in data:
                 try:
                     if "verify" in data:
-                        command1,filename = data.split('?')
-                        filename = directory + filename.strip()
+                        command1,filenameold = data.split('?')
+                        filename = directory + filenameold.strip()
                         if os.path.isfile(filename):
-                            conn.send(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)))
+                            conn.send(filenameold + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)))
                         else:
                             conn.send("#101")
                     elif "checkall" in data:
