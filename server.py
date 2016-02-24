@@ -101,7 +101,7 @@ class udp_server:
                         modified_time = time.ctime(os.path.getmtime(filename))
                         created_time = time.ctime(os.path.getctime(filename))
                         hash_value = md5(filename)
-                        s.sendto(filename+'?'+size+'?'+modified_time+'?'+hash_value+'?', addr)
+                        s.sendto(value +'?'+size+'?'+modified_time+'?'+hash_value+'?', addr)
                         f = open(filename,'rb')
                         l = f.read(1024)
                         while (l):
@@ -219,7 +219,7 @@ class tcp_server:
                         modified_time = time.ctime(os.path.getmtime(filename))
                         created_time = time.ctime(os.path.getctime(filename))
                         hash_value = md5(filename)
-                        conn.send(filename+'?'+size+'?'+modified_time+'?'+hash_value+'?')
+                        conn.send(value+'?'+size+'?'+modified_time+'?'+hash_value+'?')
                         f = open(filename,'rb')
                         l = f.read(1024)
                         while (l):
