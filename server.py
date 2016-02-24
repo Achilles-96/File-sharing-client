@@ -31,7 +31,6 @@ class udp_server:
 
         while True:
             data, addr = s.recvfrom(1024)
-            print data + 'In server'
             if data == 'Hello server':
                 s.sendto('Hello Client', addr)
             if "IndexGet" in data:
@@ -149,8 +148,6 @@ class tcp_server:
             conn, addr = s.accept()     # Establish connection with client.
             print 'Got connection from', addr
             data = conn.recv(1024)
-            print('Server received', repr(data))
-
             if data=="Hello server!":
                 conn.send("Hello client!")
 

@@ -2,6 +2,8 @@
 
 import socket                   # Import socket module
 import sys
+import datetime
+import time
 
 class udp_client:
 
@@ -133,6 +135,7 @@ class tcp_client:
 def main(ip):
     connect_tcp = tcp_client()
     connect_udp = udp_client()
+    history_file = open('history', 'a+')
     while True:
         print '1.TCP 2.UDP 3.Quit'
         try:
@@ -143,9 +146,11 @@ def main(ip):
         if protocol != 1 and protocol != 2 and protocol != 3:
             continue
         if protocol == 3:
+            history_file.close()
             sys.exit()
         input_raw = raw_input()
         if 'IndexGet shortlist' in input_raw:
+            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             inputs = input_raw.split(' ')
             command_str = 'IndexGet shortlist ?' + inputs[2] + ' ' + inputs[3] + ' ' + inputs[4] + ' ' + inputs[5] + ' ' + inputs[6]  + ' ? ' + inputs[7] + ' ' + inputs[8] + ' ' + inputs[9] + ' ' + inputs[10] + ' ' + inputs[11]
             if protocol == 1:
@@ -158,6 +163,7 @@ def main(ip):
             else:
                 print 'No files present or failed to fetch shortlist'
         if 'IndexGet longlist' in input_raw:
+            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             if protocol == 1:
                 res = connect_tcp.send("IndexGet longlist", False, ip)
             elif protocol == 2:
@@ -167,6 +173,7 @@ def main(ip):
             else:
                 print 'No files present or failed to fetch longlist'
         if 'IndexGet regex' in input_raw:
+            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             command_str = 'IndexGet regex ?' + input_raw.split(' ')[2]
             if protocol == 1:
                 res = connect_tcp.send(command_str, False, ip)
@@ -177,6 +184,7 @@ def main(ip):
             else:
                 print 'No files present or failed to fetch regex'
         if 'FileDownload' in input_raw:
+            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             command_str = 'FileDownload ? '
             cnt = 0
             for com in input_raw.split(' '):
@@ -192,6 +200,7 @@ def main(ip):
             else:
                 print 'Failed to fetch file'
         if 'FileHash' in input_raw:
+            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             command_str = 'FileHash ' + input_raw.split(' ')[1] + ' ? '
             cnt = 0
             for com in input_raw.split(' '):
