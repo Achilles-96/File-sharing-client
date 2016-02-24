@@ -39,9 +39,16 @@ class udp_server:
                         data_arr = data.split('?')
                         time_l = datetime.strptime(data_arr[1].strip(), "%a %b %d %H:%M:%S %Y")
                         time_r = datetime.strptime(data_arr[2].strip(), "%a %b %d %H:%M:%S %Y")
-                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                        files = []
+                        for dp,dd,f in os.walk(directory):
+                            for j in range(len(f)):
+                                file_name = dp
+                                if dp[len(dp)-1] != '/':
+                                    file_name += '/'
+                                file_name += f[j]
+                                files.append(file_name)
                         for f in files:
-                            filename = directory + f
+                            filename = f
                             created_time = time.ctime(os.path.getctime(filename))
                             act_time = datetime.strptime(created_time, "%a %b %d %H:%M:%S %Y")
                             if act_time <= time_r and act_time >= time_l:
@@ -52,9 +59,16 @@ class udp_server:
 
                 if "longlist" in data:
                     try:
-                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                        files = []
+                        for dp,dd,f in os.walk(directory):
+                            for j in range(len(f)):
+                                file_name = dp
+                                if dp[len(dp)-1] != '/':
+                                    file_name += '/'
+                                file_name += f[j]
+                                files.append(file_name)
                         for f in files:
-                            filename = directory + f
+                            filename = f
                             statinfo = os.stat(filename)
                             size = str(statinfo.st_size)
                             modified_time = time.ctime(os.path.getmtime(filename))
@@ -78,7 +92,14 @@ class udp_server:
                             invalid = True
                             print 'Invalid regex'
                         if not invalid:
-                            files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                            files = []
+                            for dp,dd,f in os.walk(directory):
+                                for j in range(len(f)):
+                                    file_name = dp
+                                    if dp[len(dp)-1] != '/':
+                                        file_name += '/'
+                                    file_name += f[j]
+                                    files.append(file_name)
                             for f in files:
                                 if re.search(regex,f):
                                     s.sendto(f + '\n', addr)
@@ -133,9 +154,16 @@ class udp_server:
                             s.sendto("#101", addr)
                         s.sendto('#END#',addr)
                     elif "checkall" in data:
-                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                        files = []
+                        for dp,dd,f in os.walk(directory):
+                            for j in range(len(f)):
+                                file_name = dp
+                                if dp[len(dp)-1] != '/':
+                                    file_name += '/'
+                                file_name += f[j]
+                                files.append(file_name)
                         for f in files:
-                            s.sendto(f + ' => ' + md5(directory + f) + ', ' + time.ctime(os.path.getmtime(directory + f)) + '\n', addr)
+                            s.sendto(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n', addr)
                         s.sendto('#END#',addr)
                 except Exception,e:
                     print str(e) + ' : An error occured while getting the hash of the file(s), make sure you enter the correct command'
@@ -168,9 +196,16 @@ class tcp_server:
                         data_arr = data.split('?')
                         time_l = datetime.strptime(data_arr[1].strip(), "%a %b %d %H:%M:%S %Y")
                         time_r = datetime.strptime(data_arr[2].strip(), "%a %b %d %H:%M:%S %Y")
-                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                        files = []
+                        for dp,dd,f in os.walk(directory):
+                            for j in range(len(f)):
+                                file_name = dp
+                                if dp[len(dp)-1] != '/':
+                                    file_name += '/'
+                                file_name += f[j]
+                                files.append(file_name)
                         for f in files:
-                            filename = directory + f
+                            filename = f
                             created_time = time.ctime(os.path.getctime(filename))
                             act_time = datetime.strptime(created_time, "%a %b %d %H:%M:%S %Y")
                             if act_time <= time_r and act_time >= time_l:
@@ -180,9 +215,16 @@ class tcp_server:
 
                 if "longlist" in data:
                     try:
-                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                        files = []
+                        for dp,dd,f in os.walk(directory):
+                            for j in range(len(f)):
+                                file_name = dp
+                                if dp[len(dp)-1] != '/':
+                                    file_name += '/'
+                                file_name += f[j]
+                                files.append(file_name)
                         for f in files:
-                            filename = directory + f
+                            filename = f
                             statinfo = os.stat(filename)
                             size = str(statinfo.st_size)
                             modified_time = time.ctime(os.path.getmtime(filename))
@@ -205,7 +247,14 @@ class tcp_server:
                             invalid = True
                             print 'Invalid regex'
                         if not invalid:
-                            files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                            files = []
+                            for dp,dd,f in os.walk(directory):
+                                for j in range(len(f)):
+                                    file_name = dp
+                                    if dp[len(dp)-1] != '/':
+                                        file_name += '/'
+                                    file_name += f[j]
+                                    files.append(file_name)
                             for f in files:
                                 if re.search(regex,f):
                                     conn.send(f + '\n')
@@ -249,16 +298,24 @@ class tcp_server:
                         else:
                             conn.send("#101")
                     elif "checkall" in data:
-                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
+                        files = []
+                        for dp,dd,f in os.walk(directory):
+                            for j in range(len(f)):
+                                file_name = dp
+                                if dp[len(dp)-1] != '/':
+                                    file_name += '/'
+                                file_name += f[j]
+                                files.append(file_name)
                         for f in files:
-                            conn.send(f + ' => ' + md5(directory + f) + ', ' + time.ctime(os.path.getmtime(directory + f)) + '\n')
+                            conn.send(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n')
                 except Exception,e:
                     print str(e) + ' : An error occured while getting the hash of the file(s), make sure you enter the correct command'
             
             conn.close()
 
 # Error codes
-# 101 for file not found
+#101 for file not found
+#102 for permission denied 
 
 def tcp_main(ip, directory):
     server = tcp_server()

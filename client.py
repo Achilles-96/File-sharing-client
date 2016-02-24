@@ -28,7 +28,14 @@ class udp_client:
         if file_request:
             try:
                 sequence_number = 0
-                with open(os.path.join(directory,message.split('?')[1].strip()), 'wb') as f:
+                file_path = os.path.join(directory, message.split('?')[1].strip())
+                if not os.path.exists(os.path.dirname(file_path)):
+                    try:
+                        os.makedirs(os.path.dirname(file_path))
+                    except Exception,e:
+                        print str(e) + ' : Could not create the directory'
+                        return
+                with open(file_path, 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
                         if data == '#END#':
@@ -101,7 +108,14 @@ class tcp_client:
         s.send(message)
         if file_request:
             try:
-                with open(os.path.join(directory,message.split('?')[1].strip()), 'wb') as f:
+                file_path = os.path.join(directory, message.split('?')[1].strip())
+                if not os.path.exists(os.path.dirname(file_path)):
+                    try:
+                        os.makedirs(os.path.dirname(file_path))
+                    except Exception,e:
+                        print str(e) + ' : Could not create the directory'
+                        return
+                with open(file_path, 'wb') as f:
                     while True:
                         data = s.recv(1024)
                         if data == "#101" or data == '#102':

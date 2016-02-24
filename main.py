@@ -23,7 +23,7 @@ def start_udp_server(threadName):
 def start_client(threadName):
     print 'Started client'
     if len(sys.argv) < 4:
-        client.main(sys.argv[2], 'Share/') #My downloads get downloaded here
+        client.main(sys.argv[2], 'ShareDown/') #My downloads get downloaded here
     else:
         client.main(sys.argv[2], sys.argv[3])
 

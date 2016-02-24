@@ -70,3 +70,53 @@
 2016-02-24 17:36:28	FileDownload deathnote.mp4
 2016-02-24 17:36:44	FileDownload deathnote.mp4
 2016-02-24 17:37:18	FileDownload deathnote.mp4
+2016-02-24 17:49:06	IndexGet longlist
+2016-02-24 17:49:14	FileDownload testvid.mp4
+2016-02-24 17:53:39	FileDownload testvid.mp4
+2016-02-24 18:01:26	FileDownload testvid.mp4
+2016-02-24 19:23:35	FileDownload test2.txt
+2016-02-24 19:23:52	FileDownload test2.txt
+2016-02-24 19:24:04	FileDownload jjj.jpg
+2016-02-24 19:25:20	FileDownload jjj.jpg
+2016-02-24 19:26:05	FileDownload jjj.jpg
+2016-02-24 19:28:25	FileDownload test2.txt
+2016-02-24 19:29:50	FileDownload jjj.jpg
+2016-02-24 19:35:58	FileDownload jjj.jpg
+2016-02-24 19:36:57	FileDownload jjj.jpg
+2016-02-24 19:38:57	FileDownload jjj.jpg
+2016-02-24 19:43:13	FileDownload jjj.jpg
+2016-02-24 19:46:15	FileDownload jjj.jpg
+2016-02-24 19:47:28	FileDownload jjj.jpg
+2016-02-24 19:51:32	FileDownload jjj.jpg
+2016-02-24 19:52:00	FileDownload jjj.jpg
+2016-02-24 19:53:04	FileDownload jjj.jpg
+2016-02-24 20:01:32	IndexGet longlist
+2016-02-24 20:01:41	FileDownload testvid.mp4
+2016-02-24 20:54:51	IndexGet longlist
+2016-02-24 20:55:59	IndexGet longlist
+2016-02-24 20:57:26	IndexGet longlist
+2016-02-24 20:57:56	IndexGet longlist
+2016-02-24 21:09:16	IndexGet longlist
+2016-02-24 21:09:20	IndexGet longlist
+2016-02-24 21:09:28	IndexGet regex *
+2016-02-24 21:09:35	IndexGet regex .*
+2016-02-24 21:09:41	IndexGet regex .*
+2016-02-24 21:10:01	IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2017
+2016-02-24 21:10:08	IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2016
+2016-02-24 21:10:11	IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2017
+2016-02-24 21:10:13	IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2016
+2016-02-24 21:10:25	FileHash checkall
+2016-02-24 21:10:29	FileHash checkall
+2016-02-24 21:10:59	FileHash verify test1.txt
+2016-02-24 21:11:07	FileHash verify Share/test1.txt
+2016-02-24 21:11:20	FileHash verify ./test1.txt
+2016-02-24 21:11:38	FileHash verify test/test1.txt
+2016-02-24 21:11:51	FileHash verify test/test1.txt
+2016-02-24 21:12:37	FileHash checkall
+2016-02-24 21:12:39	FileHash checkall
+2016-02-24 21:12:49	FileDownload test/test1.txt
+2016-02-24 21:13:09	FileDownload test1.txt
+2016-02-24 21:13:14	FileDownload vishtest
+2016-02-24 21:17:57	IndexGet longlist
+2016-02-24 21:18:04	FileDownload test/test1.txt
+2016-02-24 21:18:32	FileDownload test/test1.txt
