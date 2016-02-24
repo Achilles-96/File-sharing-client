@@ -27,13 +27,16 @@ class udp_client:
 
         if file_request:
             try:
+                file_abspath = os.path.abspath(os.path.join(directory, message.split('?')[1].strip()))
+                if file_abspath.find(directory) != 0:
+                    return 'Please give path to file in shared folder'
                 with open(os.path.join(directory,'udp' + message.split('?')[1].strip()), 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
                         if data == '#END#':
                             receiving = False
                             break
-                        if data == "#101":
+                        if data == "#101" or data == '#102':
                             validity = False
                         if not data:
                             break
@@ -98,7 +101,7 @@ class tcp_client:
                 with open(os.path.join(directory,'tcp' + message.split('?')[1].strip()), 'wb') as f:
                     while True:
                         data = s.recv(1024)
-                        if data == "#101":
+                        if data == "#101" or data == '#102':
                             validity = False
                         if not data:
                             break
