@@ -34,7 +34,7 @@ class udp_server:
             print data + 'In server'
             if data == 'Hello server':
                 s.sendto('Hello Client', addr)
-            if "File List" in data:
+            if "IndexGet" in data:
                 if "shortlist" in data:
                     try:
                         data_arr = data.split('?')
@@ -86,7 +86,7 @@ class udp_server:
                         print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
                         continue
 
-            if "Select File" in data:
+            if "FileDownload" in data:
                 try:
                     command,value = data.split('?')
                     value=value.strip()
@@ -111,9 +111,9 @@ class udp_server:
                 except Exception,e:
                     print str(e) + ' : An error occured while fetching the file, make sure you enter the correct command'
             
-            if "Hash" in data:
+            if "FileHash" in data:
                 try:
-                    if "single" in data:
+                    if "verify" in data:
                         command1,filename = data.split('?')
                         filename = filename.strip()
                         if os.path.isfile(filename):
@@ -121,7 +121,7 @@ class udp_server:
                         else:
                             s.sendto("#101", addr)
                         s.sendto('#END#',addr)
-                    elif "all" in data:
+                    elif "checkall" in data:
                         files = [f for f in os.listdir('.') if os.path.isfile(f)]
                         for f in files:
                             s.sendto(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n', addr)
@@ -154,7 +154,7 @@ class tcp_server:
             if data=="Hello server!":
                 conn.send("Hello client!")
 
-            if "File List" in data:
+            if "IndexGet" in data:
                 if "shortlist" in data:
                     try:
                         data_arr = data.split('?')
@@ -203,7 +203,7 @@ class tcp_server:
                         print str(e) + ' : An error occured while fetching the filelist, make sure you enter the correct command'
                         continue
 
-            if "Select File" in data:
+            if "FileDownload" in data:
                 try:
                     command,value = data.split('?')
                     value=value.strip()
@@ -227,16 +227,16 @@ class tcp_server:
                 except Exception,e:
                     print str(e) + ' : An error occured while fetching the file, make sure you enter the correct command'
 
-            if "Hash" in data:
+            if "FileHash" in data:
                 try:
-                    if "single" in data:
+                    if "verify" in data:
                         command1,filename = data.split('?')
                         filename = filename.strip()
                         if os.path.isfile(filename):
                             conn.send(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)))
                         else:
                             conn.send("#101")
-                    elif "all" in data:
+                    elif "checkall" in data:
                         files = [f for f in os.listdir('.') if os.path.isfile(f)]
                         for f in files:
                             conn.send(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n')

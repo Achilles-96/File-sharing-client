@@ -3,3 +3,5 @@ received_file
 mytext.txt
 *.pyc
 temp*
+*.mp4
+*.wav

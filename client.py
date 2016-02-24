@@ -145,48 +145,63 @@ def main(ip):
         if protocol == 3:
             sys.exit()
         input_raw = raw_input()
-        if 'File List shortlist' in input_raw:
+        if 'IndexGet shortlist' in input_raw:
+            inputs = input_raw.split(' ')
+            command_str = 'IndexGet shortlist ?' + inputs[2] + ' ' + inputs[3] + ' ' + inputs[4] + ' ' + inputs[5] + ' ' + inputs[6]  + ' ? ' + inputs[7] + ' ' + inputs[8] + ' ' + inputs[9] + ' ' + inputs[10] + ' ' + inputs[11]
             if protocol == 1:
-                #File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017
-                res = connect_tcp.send(input_raw, False, ip)
+                #IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2017
+                res = connect_tcp.send(command_str, False, ip)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, False, ip)
+                res = connect_udp.send(command_str, False, ip)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch shortlist'
-        if 'File List longlist' in input_raw:
+        if 'IndexGet longlist' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List longlist", False, ip)
+                res = connect_tcp.send("IndexGet longlist", False, ip)
             elif protocol == 2:
-                res = connect_udp.send("File List longlist", False, ip)
+                res = connect_udp.send("IndexGet longlist", False, ip)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch longlist'
-        if 'File List regex' in input_raw:
+        if 'IndexGet regex' in input_raw:
+            command_str = 'IndexGet regex ?' + input_raw.split(' ')[2]
             if protocol == 1:
-                res = connect_tcp.send(input_raw, False, ip)
+                res = connect_tcp.send(command_str, False, ip)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, False, ip)
+                res = connect_udp.send(command_str, False, ip)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch regex'
-        if 'Select File' in input_raw:
+        if 'FileDownload' in input_raw:
+            command_str = 'FileDownload ? '
+            cnt = 0
+            for com in input_raw.split(' '):
+                if cnt >= 1:
+                    command_str += com
+                cnt += 1
             if protocol == 1:
-                res = connect_tcp.send(input_raw, True, ip)
+                res = connect_tcp.send(command_str, True, ip)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, True, ip)
+                res = connect_udp.send(command_str, True, ip)
             if res:
                 print res
             else:
                 print 'Failed to fetch file'
-        if 'Hash' in input_raw:
+        if 'FileHash' in input_raw:
+            command_str = 'FileHash ' + input_raw.split(' ')[1] + ' ? '
+            cnt = 0
+            for com in input_raw.split(' '):
+                if cnt >= 2:
+                    command_str += com
+                cnt += 1
             if protocol == 1:
-                res = connect_tcp.send(input_raw, False, ip)
+                res = connect_tcp.send(command_str, False, ip)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, False, ip)
+                res = connect_udp.send(command_str, False, ip)
             if res:
                 print res
             else:
