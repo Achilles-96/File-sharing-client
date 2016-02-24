@@ -153,70 +153,73 @@ def main(ip, directory):
             history_file.close()
             sys.exit()
         input_raw = raw_input()
-        if 'IndexGet shortlist' in input_raw:
-            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
-            inputs = input_raw.split(' ')
-            command_str = 'IndexGet shortlist ?' + inputs[2] + ' ' + inputs[3] + ' ' + inputs[4] + ' ' + inputs[5] + ' ' + inputs[6]  + ' ? ' + inputs[7] + ' ' + inputs[8] + ' ' + inputs[9] + ' ' + inputs[10] + ' ' + inputs[11]
-            if protocol == 1:
-                #IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2017
-                res = connect_tcp.send(command_str, False, ip, directory)
-            elif protocol == 2:
-                res = connect_udp.send(command_str, False, ip, directory)
-            if res:
-                print res
-            else:
-                print 'No files present or failed to fetch shortlist'
-        if 'IndexGet longlist' in input_raw:
-            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
-            if protocol == 1:
-                res = connect_tcp.send("IndexGet longlist", False, ip, directory)
-            elif protocol == 2:
-                res = connect_udp.send("IndexGet longlist", False, ip, directory)
-            if res:
-                print res
-            else:
-                print 'No files present or failed to fetch longlist'
-        if 'IndexGet regex' in input_raw:
-            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
-            command_str = 'IndexGet regex ?' + input_raw.split(' ')[2]
-            if protocol == 1:
-                res = connect_tcp.send(command_str, False, ip, directory)
-            elif protocol == 2:
-                res = connect_udp.send(command_str, False, ip, directory)
-            if res:
-                print res
-            else:
-                print 'No files present or failed to fetch regex'
-        if 'FileDownload' in input_raw:
-            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
-            command_str = 'FileDownload ? '
-            cnt = 0
-            for com in input_raw.split(' '):
-                if cnt >= 1:
-                    command_str += com
-                cnt += 1
-            if protocol == 1:
-                res = connect_tcp.send(command_str, True, ip, directory)
-            elif protocol == 2:
-                res = connect_udp.send(command_str, True, ip, directory)
-            if res:
-                print res
-            else:
-                print 'Failed to fetch file'
-        if 'FileHash' in input_raw:
-            history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
-            command_str = 'FileHash ' + input_raw.split(' ')[1] + ' ? '
-            cnt = 0
-            for com in input_raw.split(' '):
-                if cnt >= 2:
-                    command_str += com
-                cnt += 1
-            if protocol == 1:
-                res = connect_tcp.send(command_str, False, ip, directory)
-            elif protocol == 2:
-                res = connect_udp.send(command_str, False, ip, directory)
-            if res:
-                print res
-            else:
-                print 'Failed to get hash'
+        try:
+            if 'IndexGet shortlist' in input_raw:
+                history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
+                inputs = input_raw.split(' ')
+                command_str = 'IndexGet shortlist ?' + inputs[2] + ' ' + inputs[3] + ' ' + inputs[4] + ' ' + inputs[5] + ' ' + inputs[6]  + ' ? ' + inputs[7] + ' ' + inputs[8] + ' ' + inputs[9] + ' ' + inputs[10] + ' ' + inputs[11]
+                if protocol == 1:
+                    #IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2017
+                    res = connect_tcp.send(command_str, False, ip, directory)
+                elif protocol == 2:
+                    res = connect_udp.send(command_str, False, ip, directory)
+                if res:
+                    print res
+                else:
+                    print 'No files present or failed to fetch shortlist'
+            if 'IndexGet longlist' in input_raw:
+                history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
+                if protocol == 1:
+                    res = connect_tcp.send("IndexGet longlist", False, ip, directory)
+                elif protocol == 2:
+                    res = connect_udp.send("IndexGet longlist", False, ip, directory)
+                if res:
+                    print res
+                else:
+                    print 'No files present or failed to fetch longlist'
+            if 'IndexGet regex' in input_raw:
+                history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
+                command_str = 'IndexGet regex ?' + input_raw.split(' ')[2]
+                if protocol == 1:
+                    res = connect_tcp.send(command_str, False, ip, directory)
+                elif protocol == 2:
+                    res = connect_udp.send(command_str, False, ip, directory)
+                if res:
+                    print res
+                else:
+                    print 'No files present or failed to fetch regex'
+            if 'FileDownload' in input_raw:
+                history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
+                command_str = 'FileDownload ? '
+                cnt = 0
+                for com in input_raw.split(' '):
+                    if cnt >= 1:
+                        command_str += com
+                    cnt += 1
+                if protocol == 1:
+                    res = connect_tcp.send(command_str, True, ip, directory)
+                elif protocol == 2:
+                    res = connect_udp.send(command_str, True, ip, directory)
+                if res:
+                    print res
+                else:
+                    print 'Failed to fetch file'
+            if 'FileHash' in input_raw:
+                history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
+                command_str = 'FileHash ' + input_raw.split(' ')[1] + ' ? '
+                cnt = 0
+                for com in input_raw.split(' '):
+                    if cnt >= 2:
+                        command_str += com
+                    cnt += 1
+                if protocol == 1:
+                    res = connect_tcp.send(command_str, False, ip, directory)
+                elif protocol == 2:
+                    res = connect_udp.send(command_str, False, ip, directory)
+                if res:
+                    print res
+                else:
+                    print 'Failed to get hash'
+        except Exception,e:
+            print str(e) + ' : Could not establish connection'
 
