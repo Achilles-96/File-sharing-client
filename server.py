@@ -206,7 +206,10 @@ class tcp_server:
                 try:
                     command,value = data.split('?')
                     value=value.strip()
-                    if os.path.isfile(directory + value):
+                    file_abspath = os.path.abspath(directory + value)
+                    if file_abspath.find(directory) != 0:
+                        conn.send('#101')
+                    elif os.path.isfile(directory + value):
                         filename=directory + value
                         statinfo = os.stat( filename)
                         size = str(statinfo.st_size)

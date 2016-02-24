@@ -90,9 +90,11 @@ class tcp_client:
         header = True
 
         s.send(message)
-        
         if file_request:
             try:
+                file_abspath = os.path.abspath(os.path.join(directory, message.split('?')[1].strip()))
+                if file_abspath.find(directory) != 0:
+                    return 'Please give path to file in shared folder'
                 with open(os.path.join(directory,'tcp' + message.split('?')[1].strip()), 'wb') as f:
                     while True:
                         data = s.recv(1024)
