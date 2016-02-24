@@ -8,15 +8,24 @@ import sys
 
 def start_tcp_server(threadName):
     print 'Started TCP server'
-    server.tcp_main(sys.argv[1])
+    if len(sys.argv) < 4:
+        server.tcp_main(sys.argv[1], './')
+    else:
+        server.tcp_main(sys.argv[1], sys.argv[3])
 
 def start_udp_server(threadName):
     print 'Started UDP server'
-    server.udp_main(sys.argv[1])
+    if len(sys.argv) < 4:
+        server.udp_main(sys.argv[1], './')
+    else:
+        server.udp_main(sys.argv[1], sys.argv[3])
 
 def start_client(threadName):
     print 'Started client'
-    client.main(sys.argv[2])
+    if len(sys.argv) < 4:
+        client.main(sys.argv[2], './')
+    else:
+        client.main(sys.argv[2], sys.argv[3])
 
 t1 = Thread( target=start_tcp_server, args=("Server1", ) )
 t1.daemon = True

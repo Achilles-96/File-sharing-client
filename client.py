@@ -2,6 +2,7 @@
 
 import socket                   # Import socket module
 import sys
+import os
 
 class udp_client:
 
@@ -9,7 +10,7 @@ class udp_client:
         s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         return s
 
-    def send(self,message, file_request, ip):
+    def send(self,message, file_request, ip, directory):
         try:
             s =  self.connect(ip)
         except Exception, e:
@@ -24,7 +25,7 @@ class udp_client:
 
         if file_request:
             try:
-                with open('temper1' + message.split('?')[1].strip(), 'wb') as f:
+                with open(os.path.join(directory,'temper1' + message.split('?')[1].strip()), 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
                         if data == '#END#':
@@ -75,7 +76,7 @@ class tcp_client:
         s.connect((ip,60000))
         return s
 
-    def send(self, message, file_request, ip):
+    def send(self, message, file_request, ip, directory):
         try:
             s = self.connect(ip)
         except Exception, e:
@@ -90,7 +91,7 @@ class tcp_client:
         
         if file_request:
             try:
-                with open('temper' + message.split('?')[1].strip(), 'wb') as f:
+                with open(os.path.join(directory,'temper' + message.split('?')[1].strip()), 'wb') as f:
                     while True:
                         data = s.recv(1024)
                         if data == "#101":
@@ -130,7 +131,7 @@ class tcp_client:
             except Exception,e:
                 print str(e) + ' : Unable to fetch data from server'
 
-def main(ip):
+def main(ip, directory):
     connect_tcp = tcp_client()
     connect_udp = udp_client()
     while True:
@@ -148,45 +149,45 @@ def main(ip):
         if 'File List shortlist' in input_raw:
             if protocol == 1:
                 #File List shortlist ? Wed Feb 10 15:51:38 2016 ? Wed Feb 10 15:51:54 2017
-                res = connect_tcp.send(input_raw, False, ip)
+                res = connect_tcp.send(input_raw, False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, False, ip)
+                res = connect_udp.send(input_raw, False, ip, directory)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch shortlist'
         if 'File List longlist' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send("File List longlist", False, ip)
+                res = connect_tcp.send("File List longlist", False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send("File List longlist", False, ip)
+                res = connect_udp.send("File List longlist", False, ip, directory)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch longlist'
         if 'File List regex' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send(input_raw, False, ip)
+                res = connect_tcp.send(input_raw, False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, False, ip)
+                res = connect_udp.send(input_raw, False, ip, directory)
             if res:
                 print res
             else:
                 print 'No files present or failed to fetch regex'
         if 'Select File' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send(input_raw, True, ip)
+                res = connect_tcp.send(input_raw, True, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, True, ip)
+                res = connect_udp.send(input_raw, True, ip, directory)
             if res:
                 print res
             else:
                 print 'Failed to fetch file'
         if 'Hash' in input_raw:
             if protocol == 1:
-                res = connect_tcp.send(input_raw, False, ip)
+                res = connect_tcp.send(input_raw, False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(input_raw, False, ip)
+                res = connect_udp.send(input_raw, False, ip, directory)
             if res:
                 print res
             else:
