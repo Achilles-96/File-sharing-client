@@ -25,7 +25,7 @@ class udp_server:
         s.bind((ip, port))
         return s
 
-    def runServer(self,ip):
+    def runServer(self,ip, directory):
         s = self.init(ip)
         print 'UDP server listening....'
 
@@ -39,9 +39,10 @@ class udp_server:
                         data_arr = data.split('?')
                         time_l = datetime.strptime(data_arr[1].strip(), "%a %b %d %H:%M:%S %Y")
                         time_r = datetime.strptime(data_arr[2].strip(), "%a %b %d %H:%M:%S %Y")
-                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                         for f in files:
-                            created_time = time.ctime(os.path.getctime(f))
+                            filename = directory + f
+                            created_time = time.ctime(os.path.getctime(filename))
                             act_time = datetime.strptime(created_time, "%a %b %d %H:%M:%S %Y")
                             if act_time <= time_r and act_time >= time_l:
                                 s.sendto(f + '\n', addr)
@@ -51,13 +52,14 @@ class udp_server:
 
                 if "longlist" in data:
                     try:
-                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                         for f in files:
-                            statinfo = os.stat(f)
+                            filename = directory + f
+                            statinfo = os.stat(filename)
                             size = str(statinfo.st_size)
-                            modified_time = time.ctime(os.path.getmtime(f))
-                            created_time = time.ctime(os.path.getctime(f))
-                            type_of_file, encoding = mimetypes.guess_type(f,True)
+                            modified_time = time.ctime(os.path.getmtime(filename))
+                            created_time = time.ctime(os.path.getctime(filename))
+                            type_of_file, encoding = mimetypes.guess_type(filename,True)
                             if type_of_file:
                                 s.sendto(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + type_of_file + '\n', addr)  #send file list to server
                             else:
@@ -76,7 +78,7 @@ class udp_server:
                             invalid = True
                             print 'Invalid regex'
                         if not invalid:
-                            files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                            files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                             for f in files:
                                 if re.search(regex,f):
                                     s.sendto(f + '\n', addr)
@@ -114,16 +116,16 @@ class udp_server:
                 try:
                     if "verify" in data:
                         command1,filename = data.split('?')
-                        filename = filename.strip()
+                        filename = directory + filename.strip()
                         if os.path.isfile(filename):
                             s.sendto(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)), addr)
                         else:
                             s.sendto("#101", addr)
                         s.sendto('#END#',addr)
                     elif "checkall" in data:
-                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                         for f in files:
-                            s.sendto(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n', addr)
+                            s.sendto(f + ' => ' + md5(directory + f) + ', ' + time.ctime(os.path.getmtime(directory + f)) + '\n', addr)
                         s.sendto('#END#',addr)
                 except Exception,e:
                     print str(e) + ' : An error occured while getting the hash of the file(s), make sure you enter the correct command'
@@ -140,7 +142,7 @@ class tcp_server:
         s.listen(5)                     # Now wait for client connection.
         return s
 
-    def runServer(self,ip):
+    def runServer(self,ip, directory):
         s = self.init(ip)
         print 'TCP server listening....'
 
@@ -157,9 +159,10 @@ class tcp_server:
                         data_arr = data.split('?')
                         time_l = datetime.strptime(data_arr[1].strip(), "%a %b %d %H:%M:%S %Y")
                         time_r = datetime.strptime(data_arr[2].strip(), "%a %b %d %H:%M:%S %Y")
-                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                         for f in files:
-                            created_time = time.ctime(os.path.getctime(f))
+                            filename = directory + f
+                            created_time = time.ctime(os.path.getctime(filename))
                             act_time = datetime.strptime(created_time, "%a %b %d %H:%M:%S %Y")
                             if act_time <= time_r and act_time >= time_l:
                                 conn.send(f + '\n')
@@ -168,13 +171,14 @@ class tcp_server:
 
                 if "longlist" in data:
                     try:
-                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                         for f in files:
-                            statinfo = os.stat(f)
+                            filename = directory + f
+                            statinfo = os.stat(filename)
                             size = str(statinfo.st_size)
-                            modified_time = time.ctime(os.path.getmtime(f))
-                            created_time = time.ctime(os.path.getctime(f))
-                            type_of_file, encoding = mimetypes.guess_type(f,True)
+                            modified_time = time.ctime(os.path.getmtime(filename))
+                            created_time = time.ctime(os.path.getctime(filename))
+                            type_of_file, encoding = mimetypes.guess_type(filename,True)
                             if type_of_file:
                                 conn.send(f + '\t' + size + '\t' + modified_time + '\t' + created_time + '\t' + type_of_file + '\n')  #send file list to server
                             else:
@@ -192,7 +196,7 @@ class tcp_server:
                             invalid = True
                             print 'Invalid regex'
                         if not invalid:
-                            files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                            files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                             for f in files:
                                 if re.search(regex,f):
                                     conn.send(f + '\n')
@@ -204,9 +208,10 @@ class tcp_server:
                 try:
                     command,value = data.split('?')
                     value=value.strip()
-                    if os.path.isfile(value):
-                        filename=value
-                        statinfo = os.stat(filename)
+                    if os.path.isfile(directory + value):
+                        filename=directory + value
+                        print filename
+                        statinfo = os.stat( filename)
                         size = str(statinfo.st_size)
                         modified_time = time.ctime(os.path.getmtime(filename))
                         created_time = time.ctime(os.path.getctime(filename))
@@ -228,15 +233,15 @@ class tcp_server:
                 try:
                     if "verify" in data:
                         command1,filename = data.split('?')
-                        filename = filename.strip()
+                        filename = directory + filename.strip()
                         if os.path.isfile(filename):
                             conn.send(filename + ' => ' + md5(filename) + ', ' + time.ctime(os.path.getmtime(filename)))
                         else:
                             conn.send("#101")
                     elif "checkall" in data:
-                        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+                        files = [f for f in os.listdir(directory) if os.path.isfile(directory + f)]
                         for f in files:
-                            conn.send(f + ' => ' + md5(f) + ', ' + time.ctime(os.path.getmtime(f)) + '\n')
+                            conn.send(f + ' => ' + md5(directory + f) + ', ' + time.ctime(os.path.getmtime(directory + f)) + '\n')
                 except Exception,e:
                     print str(e) + ' : An error occured while getting the hash of the file(s), make sure you enter the correct command'
             
@@ -245,10 +250,10 @@ class tcp_server:
 # Error codes
 # 101 for file not found
 
-def tcp_main(ip):
+def tcp_main(ip, directory):
     server = tcp_server()
-    server.runServer(ip)
+    server.runServer(ip, directory)
 
-def udp_main(ip):
+def udp_main(ip, directory):
     server = udp_server()
-    server.runServer(ip)
+    server.runServer(ip, directory)

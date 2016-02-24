@@ -4,6 +4,7 @@ import socket                   # Import socket module
 import sys
 import datetime
 import time
+import os
 
 class udp_client:
 
@@ -11,7 +12,7 @@ class udp_client:
         s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         return s
 
-    def send(self,message, file_request, ip):
+    def send(self,message, file_request, ip, directory):
         try:
             s =  self.connect(ip)
         except Exception, e:
@@ -26,7 +27,7 @@ class udp_client:
 
         if file_request:
             try:
-                with open('temper1' + message.split('?')[1].strip(), 'wb') as f:
+                with open(os.path.join(directory,'temper1' + message.split('?')[1].strip()), 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
                         if data == '#END#':
@@ -77,7 +78,7 @@ class tcp_client:
         s.connect((ip,60000))
         return s
 
-    def send(self, message, file_request, ip):
+    def send(self, message, file_request, ip, directory):
         try:
             s = self.connect(ip)
         except Exception, e:
@@ -92,7 +93,7 @@ class tcp_client:
         
         if file_request:
             try:
-                with open('temper' + message.split('?')[1].strip(), 'wb') as f:
+                with open(os.path.join(directory,'temper' + message.split('?')[1].strip()), 'wb') as f:
                     while True:
                         data = s.recv(1024)
                         if data == "#101":
@@ -132,7 +133,7 @@ class tcp_client:
             except Exception,e:
                 print str(e) + ' : Unable to fetch data from server'
 
-def main(ip):
+def main(ip, directory):
     connect_tcp = tcp_client()
     connect_udp = udp_client()
     history_file = open('history', 'a+')
@@ -155,9 +156,9 @@ def main(ip):
             command_str = 'IndexGet shortlist ?' + inputs[2] + ' ' + inputs[3] + ' ' + inputs[4] + ' ' + inputs[5] + ' ' + inputs[6]  + ' ? ' + inputs[7] + ' ' + inputs[8] + ' ' + inputs[9] + ' ' + inputs[10] + ' ' + inputs[11]
             if protocol == 1:
                 #IndexGet shortlist Wed Feb 10 15:51:38 2016 Wed Feb 10 15:51:54 2017
-                res = connect_tcp.send(command_str, False, ip)
+                res = connect_tcp.send(command_str, False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(command_str, False, ip)
+                res = connect_udp.send(command_str, False, ip, directory)
             if res:
                 print res
             else:
@@ -165,9 +166,9 @@ def main(ip):
         if 'IndexGet longlist' in input_raw:
             history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             if protocol == 1:
-                res = connect_tcp.send("IndexGet longlist", False, ip)
+                res = connect_tcp.send("IndexGet longlist", False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send("IndexGet longlist", False, ip)
+                res = connect_udp.send("IndexGet longlist", False, ip, directory)
             if res:
                 print res
             else:
@@ -176,9 +177,9 @@ def main(ip):
             history_file.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\t' + input_raw + '\n')
             command_str = 'IndexGet regex ?' + input_raw.split(' ')[2]
             if protocol == 1:
-                res = connect_tcp.send(command_str, False, ip)
+                res = connect_tcp.send(command_str, False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(command_str, False, ip)
+                res = connect_udp.send(command_str, False, ip, directory)
             if res:
                 print res
             else:
@@ -192,9 +193,9 @@ def main(ip):
                     command_str += com
                 cnt += 1
             if protocol == 1:
-                res = connect_tcp.send(command_str, True, ip)
+                res = connect_tcp.send(command_str, True, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(command_str, True, ip)
+                res = connect_udp.send(command_str, True, ip, directory)
             if res:
                 print res
             else:
@@ -208,9 +209,9 @@ def main(ip):
                     command_str += com
                 cnt += 1
             if protocol == 1:
-                res = connect_tcp.send(command_str, False, ip)
+                res = connect_tcp.send(command_str, False, ip, directory)
             elif protocol == 2:
-                res = connect_udp.send(command_str, False, ip)
+                res = connect_udp.send(command_str, False, ip, directory)
             if res:
                 print res
             else:
