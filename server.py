@@ -102,11 +102,19 @@ class udp_server:
                         created_time = time.ctime(os.path.getctime(filename))
                         hash_value = md5(filename)
                         s.sendto(value +'?'+size+'?'+modified_time+'?'+hash_value+'?', addr)
+                        data,addr = s.recvfrom(1024)
                         f = open(filename,'rb')
-                        l = f.read(1024)
+                        l = f.read(512)
+                        seq_number = 1
                         while (l):
-                            s.sendto(l, addr)
-                            l = f.read(1024)
+                            s.sendto(str(seq_number) + '#NEXT#' + l, addr)
+                            data,addr = s.recvfrom(1024)
+                            while data != str(seq_number):
+                                s.sendto(str(seq_number) + '#NEXT#' + l, addr)
+                                s.settimeout(5.0)
+                                data,addr = s.recvfrom(1024)
+                            seq_number += 1
+                            l = f.read(512)
                         f.close()
                     else:
                         conn.send("#101")

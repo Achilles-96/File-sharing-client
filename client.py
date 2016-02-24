@@ -27,6 +27,7 @@ class udp_client:
 
         if file_request:
             try:
+                sequence_number = 0
                 with open(os.path.join(directory,message.split('?')[1].strip()), 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
@@ -47,9 +48,15 @@ class udp_client:
                             print data.split('?')[3]
                             print 'End of header'
                             f.write(data.split('?')[4])
+                            s.sendto('0', (ip, 60001))
                             header = False
                         elif validity == True:
-                            f.write(data)
+                            if data.split('#NEXT#')[0] == str(sequence_number+1):
+                                sequence_number += 1
+                                s.sendto(str(sequence_number), (ip, 60001))
+                                f.write(data.split('#NEXT#')[1])
+                            else:
+                                s.sendto('-1', (ip, 60001))
                 f.close()
                 s.close()
                 if validity:
