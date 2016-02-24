@@ -1,6 +1,6 @@
 #!/bin/python
 
-import thread
+from threading import Thread
 import time
 import server
 import client
@@ -18,14 +18,16 @@ def start_client(threadName):
     print 'Started client'
     client.main(sys.argv[2])
 
-try:
-    thread.start_new_thread( start_tcp_server, ("Server", ) )
-    time.sleep(1)
-    thread.start_new_thread( start_udp_server, ("Server", ) )
-    time.sleep(1)
-    thread.start_new_thread( start_client, ("Client", ) )
-except:
-    print "Error: unable to start thread"
+t1 = Thread( target=start_tcp_server, args=("Server1", ) )
+t1.daemon = True
+t1.start()
+time.sleep(1)
+t2 = Thread( target=start_udp_server, args=("Server2", ) )
+t2.daemon = True
+t2.start()
+time.sleep(1)
+t3 = Thread( target=start_client, args=("Client", ) )
+t3.start()
        
-while 1:
-    pass
+t3.join()
+sys.exit()

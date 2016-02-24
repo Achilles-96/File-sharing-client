@@ -1,6 +1,7 @@
 # client.py
 
 import socket                   # Import socket module
+import sys
 
 class udp_client:
 
@@ -133,14 +134,16 @@ def main(ip):
     connect_tcp = tcp_client()
     connect_udp = udp_client()
     while True:
-        print '1.TCP 2.UDP'
+        print '1.TCP 2.UDP 3.Quit'
         try:
             protocol = input()
         except Exception,e:
             print str(e) + ' : Please enter a number corresponding to the protocol'
             continue
-        if protocol != 1 and protocol != 2:
+        if protocol != 1 and protocol != 2 and protocol != 3:
             continue
+        if protocol == 3:
+            sys.exit()
         input_raw = raw_input()
         if 'File List shortlist' in input_raw:
             if protocol == 1:
@@ -188,3 +191,4 @@ def main(ip):
                 print res
             else:
                 print 'Failed to get hash'
+
