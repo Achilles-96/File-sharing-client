@@ -1,2 +1,26 @@
 2016-02-24 12:09:32	IndexGet longlist
 2016-02-24 12:09:38	IndexGet longlist
+2016-02-24 13:29:10	IndexGet longlist
+2016-02-24 13:31:15	IndexGet longlist
+2016-02-24 13:31:25	IndexGet regex ^t
+2016-02-24 13:31:34	IndexGet regex ^t
+2016-02-24 13:31:48	FileDownload server.pyc
+2016-02-24 13:32:10	FileDownload server.pyc
+2016-02-24 13:32:50	FileHash 
+2016-02-24 13:33:01	FileHash get temp.txt
+2016-02-24 13:34:05	FileHash verify client.py
+2016-02-24 13:34:13	FileHash verify client.py
+2016-02-24 13:34:27	FileHash checkall
+2016-02-24 13:34:32	FileHash checkall
+2016-02-24 13:38:22	IndexGet longlist ..
+2016-02-24 13:38:34	IndexGet longlist ./..
+2016-02-24 13:38:50	IndexGet longlist ./Share
+2016-02-24 13:39:51	IndexGet longlist Share
+2016-02-24 13:40:42	IndexGet longlist Share
+2016-02-24 13:41:21	IndexGet longlist Share
+2016-02-24 13:46:15	IndexGet longlist
+2016-02-24 13:46:36	IndexGet longlist
+2016-02-24 13:47:09	IndexGet longlist
+2016-02-24 13:47:15	IndexGet longlist
+2016-02-24 13:47:35	FileDownload temp.txt
+2016-02-24 13:47:40	FileDownload temp.txt

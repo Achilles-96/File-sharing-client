@@ -27,7 +27,7 @@ class udp_client:
 
         if file_request:
             try:
-                with open(os.path.join(directory,'temper1' + message.split('?')[1].strip()), 'wb') as f:
+                with open(os.path.join(directory,'udp' + message.split('?')[1].strip()), 'wb') as f:
                     while receiving:
                         data, addr = s.recvfrom(1024)
                         if data == '#END#':
@@ -93,7 +93,7 @@ class tcp_client:
         
         if file_request:
             try:
-                with open(os.path.join(directory,'temper' + message.split('?')[1].strip()), 'wb') as f:
+                with open(os.path.join(directory,'tcp' + message.split('?')[1].strip()), 'wb') as f:
                     while True:
                         data = s.recv(1024)
                         if data == "#101":

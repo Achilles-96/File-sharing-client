@@ -9,21 +9,21 @@ import sys
 def start_tcp_server(threadName):
     print 'Started TCP server'
     if len(sys.argv) < 4:
-        server.tcp_main(sys.argv[1], './')
+        server.tcp_main(sys.argv[1], 'Share/') #The folder I share with other clients
     else:
         server.tcp_main(sys.argv[1], sys.argv[3])
 
 def start_udp_server(threadName):
     print 'Started UDP server'
     if len(sys.argv) < 4:
-        server.udp_main(sys.argv[1], './')
+        server.udp_main(sys.argv[1], 'Share/') #The folder I share with other clients
     else:
         server.udp_main(sys.argv[1], sys.argv[3])
 
 def start_client(threadName):
     print 'Started client'
     if len(sys.argv) < 4:
-        client.main(sys.argv[2], './')
+        client.main(sys.argv[2], 'Share/') #My downloads get downloaded here
     else:
         client.main(sys.argv[2], sys.argv[3])
 
