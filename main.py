@@ -25,7 +25,7 @@ def start_client(threadName):
     if len(sys.argv) < 4:
         client.main(sys.argv[2], 'ShareDown/') #My downloads get downloaded here
     else:
-        client.main(sys.argv[1], sys.argv[3]+'/' if sys.argv[3][len(sys.argv[3])-1]!='/' else sys.argv[3])
+        client.main(sys.argv[2], sys.argv[3]+'/' if sys.argv[3][len(sys.argv[3])-1]!='/' else sys.argv[3])
 
 t1 = Thread( target=start_tcp_server, args=("Server1", ) )
 t1.daemon = True
