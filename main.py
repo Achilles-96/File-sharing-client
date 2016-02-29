@@ -11,21 +11,21 @@ def start_tcp_server(threadName):
     if len(sys.argv) < 4:
         server.tcp_main(sys.argv[1], 'Share/') #The folder I share with other clients
     else:
-        server.tcp_main(sys.argv[1], sys.argv[3])
+        server.tcp_main(sys.argv[1], sys.argv[3]+'/' if sys.argv[3][len(sys.argv[3])-1]!='/' else sys.argv[3])
 
 def start_udp_server(threadName):
     print 'Started UDP server'
     if len(sys.argv) < 4:
         server.udp_main(sys.argv[1], 'Share/') #The folder I share with other clients
     else:
-        server.udp_main(sys.argv[1], sys.argv[3])
+        server.udp_main(sys.argv[1], sys.argv[3]+'/' if sys.argv[3][len(sys.argv[3])-1]!='/' else sys.argv[3])
 
 def start_client(threadName):
     print 'Started client'
     if len(sys.argv) < 4:
         client.main(sys.argv[2], 'ShareDown/') #My downloads get downloaded here
     else:
-        client.main(sys.argv[2], sys.argv[3])
+        client.main(sys.argv[1], sys.argv[3]+'/' if sys.argv[3][len(sys.argv[3])-1]!='/' else sys.argv[3])
 
 t1 = Thread( target=start_tcp_server, args=("Server1", ) )
 t1.daemon = True

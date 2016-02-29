@@ -47,7 +47,7 @@ class udp_server:
                                 if dp[len(dp)-1] != '/':
                                     file_name += '/'
                                 file_name += f[j]
-                                file_endings.append(f[j])
+                                file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                 files.append(file_name)
                         for f in range(len(files)):
                             filename = files[f]
@@ -69,7 +69,7 @@ class udp_server:
                                 if dp[len(dp)-1] != '/':
                                     file_name += '/'
                                 file_name += f[j]
-                                file_endings.append(f[j])
+                                file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                 files.append(file_name)
                         for f in range(len(files)):
                             filename = files[f]
@@ -104,7 +104,7 @@ class udp_server:
                                     if dp[len(dp)-1] != '/':
                                         file_name += '/'
                                     file_name += f[j]
-                                    file_endings.append(f[j])
+                                    file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                     files.append(file_name)
                             for f in range(len(files)):
                                 if re.search(regex,files[f]):
@@ -168,7 +168,7 @@ class udp_server:
                                 if dp[len(dp)-1] != '/':
                                     file_name += '/'
                                 file_name += f[j]
-                                file_endings.append(f[j])
+                                file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                 files.append(file_name)
                         for f in range(len(files)):
                             s.sendto(file_endings[f] + ' => ' + md5(files[f]) + ', ' + time.ctime(os.path.getmtime(files[f])) + '\n', addr)
@@ -212,7 +212,7 @@ class tcp_server:
                                 if dp[len(dp)-1] != '/':
                                     file_name += '/'
                                 file_name += f[j]
-                                file_endings.append(f[j])
+                                file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                 files.append(file_name)
                         for f in range(len(files)):
                             filename = files[f]
@@ -233,7 +233,7 @@ class tcp_server:
                                 if dp[len(dp)-1] != '/':
                                     file_name += '/'
                                 file_name += f[j]
-                                file_endings.append(f[j])
+                                file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                 files.append(file_name)
                         for f in range(len(files)):
                             filename = files[f]
@@ -267,7 +267,7 @@ class tcp_server:
                                     if dp[len(dp)-1] != '/':
                                         file_name += '/'
                                     file_name += f[j]
-                                    file_endings.append(f[j])
+                                    file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                     files.append(file_name)
                             for f in range(len(files)):
                                 if re.search(regex,files[f]):
@@ -320,7 +320,7 @@ class tcp_server:
                                 if dp[len(dp)-1] != '/':
                                     file_name += '/'
                                 file_name += f[j]
-                                file_endings.append(f[j])
+                                file_endings.append(os.path.relpath(file_name, os.path.commonprefix([file_name,directory])))
                                 files.append(file_name)
                         for f in range(len(files)):
                             conn.send(file_endings[f] + ' => ' + md5(files[f]) + ', ' + time.ctime(os.path.getmtime(files[f])) + '\n')
